@@ -27,18 +27,19 @@ export class JuliansRoom extends Component {
   }
 
     async turnOnLight() {
-        alert("LED toggled");
-        this.state.lightOn = !this.state.lightOn;
 
         const axios = require('axios');
+
         axios.post('/Lighting', {
-            toggle: 'yes'
-        })
-            .then(function (response) {
-                console.log(response);
+            "toggle" : JSON.stringify(this.state.lightOn)
             })
-            .catch(function (error) {
-                console.log(error);
-            });
+                .then(function (response) {
+                    console.log(response);
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+        this.state.lightOn = !this.state.lightOn;
+        console.log("STATE OF LIGHT ON: " + this.state.lightOn);
     }
 }

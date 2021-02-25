@@ -6,34 +6,25 @@ namespace control
 {
 	public class Lighting
 	{
-		GpioController controller = new GpioController();
-		private static readonly int pin = 23;
-
-		public bool lightStatus { get; set; }
+        GpioController controller = new GpioController();
+        private static readonly int pin = 23;
+		public string toggle { get; set; }
 
 		public Lighting()
 		{
-			//pins = new Dictionary<ushort, OutputPinConfiguration> {
-			//	{ 23, ProcessorPin.Pin23.Output() },
-			//	{ 24, ProcessorPin.Pin24.Output() }
-			//};
+            controller.OpenPin(pin, PinMode.Output);
+        }
 
-			controller.OpenPin(pin, PinMode.Output);
-			lightStatus = false;
+		public void ledOn()
+        {
+            controller.Write(pin, PinValue.High);
+            Console.WriteLine("LED on");
 		}
 
-		public void toggleLight()
-		{
-			if(lightStatus)
-            {
-				controller.Write(pin, PinValue.Low);
-            }
-			else
-            {
-				controller.Write(pin, PinValue.High);
-            }
-			Console.WriteLine("Pin should be toggled.");
-			lightStatus = !lightStatus;
+		public void ledOff()
+        {
+            controller.Write(pin, PinValue.Low);
+            Console.WriteLine("LED off");
 		}
 	}
 }

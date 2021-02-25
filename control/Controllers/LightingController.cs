@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Device.Gpio;
 using System.Net.Http;
@@ -13,10 +15,18 @@ namespace control.Controllers
     {
         Lighting led = new Lighting();
 
+
         [HttpPost]
-        public void lightOn()
+        public void ToggleLight([FromBody] Lighting lighting)
         {
-            led.toggleLight();
+            if(lighting.toggle == "true")
+            {
+                led.ledOn();
+            }
+            else if(lighting.toggle == "false")
+            {
+                led.ledOff();
+            }
         }
     }
 }
