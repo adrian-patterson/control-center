@@ -11,18 +11,12 @@ namespace control.Controllers
     [Route("[controller]")]
     public class LightingController : ControllerBase
     {
-        private readonly int ledPin = 11;
-        private GpioController controller = new GpioController();
-        private static readonly HttpClient client = new HttpClient();
-        
+        Lighting led = new Lighting();
+
         [HttpPost]
-        public void turnOnLed()
+        public void lightOn()
         {
-            controller.Write(ledPin, PinValue.High);
-        }
-        public LightingController()
-        {
-            controller.OpenPin(ledPin, PinMode.Output);
+            led.toggleLight();
         }
     }
 }
