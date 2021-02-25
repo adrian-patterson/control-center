@@ -19,6 +19,7 @@ namespace control
 			//};
 
 			controller.OpenPin(pin, PinMode.Output);
+			lightStatus = false;
 		}
 
 		public void toggleLight()
