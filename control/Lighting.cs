@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using Raspberry.IO.GeneralPurpose;
+using System.Device.Gpio;
 
 namespace control
 {
 	public class Lighting
 	{
-		private static Dictionary<ushort, OutputPinConfiguration> pins;
-		private GpioConnection connection;
+		GpioController controller = new GpioController();
+		private static readonly int pin = 23;
 
 		public bool lightStatus { get; set; }
 
@@ -18,13 +18,21 @@ namespace control
 			//	{ 24, ProcessorPin.Pin24.Output() }
 			//};
 
-			connection = new GpioConnection(ProcessorPin.Pin23.Output());
+			controller.OpenPin(pin, PinMode.Output);
 		}
 
 		public void toggleLight()
 		{
-			connection.Blink(ProcessorPin.Pin23, TimeSpan.FromSeconds(1));
+			if(lightStatus)
+            {
+				controller.Write(pin, PinValue.Low);
+            }
+			else
+            {
+				controller.Write(pin, PinValue.High);
+            }
 			Console.WriteLine("Pin should be toggled.");
+			lightStatus = !lightStatus;
 		}
 	}
 }

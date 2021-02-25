@@ -1,8 +1,14 @@
 {
   "ExpandedNodes": [
     "",
-    "\\control"
+    "\\control",
+    "\\control\\ClientApp",
+    "\\control\\ClientApp\\src",
+    "\\control\\ClientApp\\src\\components",
+    "\\control\\Controllers",
+    "\\control\\Pages",
+    "\\control\\Properties"
   ],
-  "SelectedNode": "\\control\\control.csproj",
+  "SelectedNode": "\\control\\Lighting.cs",
   "PreviewInSolutionExplorer": false
 }
