@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Device.Gpio;
 
 namespace control
