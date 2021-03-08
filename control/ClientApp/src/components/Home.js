@@ -6,7 +6,7 @@ export class Home extends Component {
   render () {
     return (
       <div>
-        <h1>Welcome</h1>
+        <h1>Welcome Julian</h1>
         <h4>Objective for the welcome page:</h4>
         <ul>
           <li>Display <strong>Weather</strong></li>

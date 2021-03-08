@@ -1,4 +1,6 @@
+import ColorPicker from '@radial-color-picker/react-color-picker';
 import React, { Component } from 'react';
+
 
 export class JuliansRoom extends Component {
   static displayName = JuliansRoom.name;
@@ -18,8 +20,9 @@ export class JuliansRoom extends Component {
     
 
   render() {
-    return (
-      <div>
+      return (
+          <div>
+            <ColorPicker hue="0" onInput={hue => console.log("Selected Hue: "+ hue)} />
             <button className="btn btn-primary" onClick={this.turnOnLight}>Toggle LED</button>
       </div>
     );
