@@ -3,12 +3,13 @@ import React, { Component } from 'react';
 
 
 export class JuliansRoom extends Component {
-  static displayName = JuliansRoom.name;
+    static displayName = JuliansRoom.name;
 
   constructor(props) {
     super(props);
       this.state = { lightOn: false };
       this.turnOnLight = this.turnOnLight.bind(this);
+      //this.RGBtoHSV = this.RGBtoHSV.bind(this);
   }
 
   componentDidMount() {
@@ -17,7 +18,7 @@ export class JuliansRoom extends Component {
       }
     }
 
-    
+
 
   render() {
       return (
@@ -44,4 +45,5 @@ export class JuliansRoom extends Component {
         this.state.lightOn = !this.state.lightOn;
         console.log("STATE OF LIGHT ON: " + this.state.lightOn);
     }
+
 }
