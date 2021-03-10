@@ -34,7 +34,7 @@ namespace control
         public void setRgb()
         {
             settings.Channels[0] = new Channel(16, 18, 255, false, StripType.WS2812_STRIP);
-            fpr (int a = 0; a < 88; a = a + 1)
+            for (int a = 0; a < 88; a = a + 1)
             {
                 ws281.SetLEDColor(0, a, Color.Red);
                 ws281.Render();
