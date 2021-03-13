@@ -1,55 +1,30 @@
 ﻿using System;
-using System.Device.Gpio;
-using (var ws281 = new WS281x(settings));
-using System.Color;
+using System.Drawing;
+using rpi_ws281x;
 
 namespace control
 {
     public class Lighting
     {
-        GpioController controller = new GpioController();
-        private static readonly int pin = 23;
-        public string toggle { get; set; }
         public int r { get; set; }
         public int g { get; set; }
         public int b { get; set; }
 
-        public Lighting()
-		{
-            controller.OpenPin(pin, PinMode.Output);
-        }
-
-		public void ledOn()
-        {
-            controller.Write(pin, PinValue.High);
-            Console.WriteLine("LED on");
-		}
-
-		public void ledOff()
-        {
-            controller.Write(pin, PinValue.Low);
-            Console.WriteLine("LED off");
-		}
-
         public void setRgb()
         {
-            settings.Channels[0] = new Channel(16, 18, 255, false, StripType.WS2812_STRIP);
-            for (int a = 0; a < 88; a = a + 1)
-            {
-                ws281.SetLEDColor(0, a, Color.Red);
-                ws281.Render();
-            }
-            //Adrian's comments:
-            // ws281.setColor(r,g,b)
-            // you're going to have to use Color objects to set them
-            // Color myColor = new Color(r,g,b)
-            // also will have to import color library 'using System.Color'
+            Console.WriteLine("R: " + r + "\tG: " + g + "\tB: " + b);
 
-            //Julian's comments:
-            //This should set the whole strip to the red color
-            // I need to further explore the library to find how to set LED colors
-            // using RGB values instead of color.red
-            // might not work (unknown errors) 
+            var settings = Settings.CreateDefaultSettings(false);
+            var controller = settings.AddController(88, Pin.Gpio18, StripType.WS2812_STRIP, 255, false);
+
+            Color color = new Color();
+            color = Color.FromArgb(r, g, b);
+
+            using (var rpi = new WS281x(settings))
+            {
+                rpi.SetLedCount(88);
+                rpi.SetAll(color);
+            }
         }
 	}
 }

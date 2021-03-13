@@ -19,14 +19,7 @@ namespace control.Controllers
         [HttpPost]
         public void ToggleLight([FromBody] Lighting lighting)
         {
-            if(lighting.toggle == "true")
-            {
-                led.ledOn();
-            }
-            else if(lighting.toggle == "false")
-            {
-                led.ledOff();
-            }
+            lighting.setRgb();
         }
     }
 }
