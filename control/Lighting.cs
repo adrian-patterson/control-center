@@ -26,14 +26,18 @@ namespace control
             var controller = settings.AddController(88, Pin.Gpio18, StripType.WS2812_STRIP, 255, false);
 
             Color color = new Color();
-            color = Color.FromArgb(r, g, b);
+            color = Color.FromArgb(r, b, g);
 
             using (var rpi = new WS281x(settings))
             {
-                rpi.SetLedCount(88);
+                var ledCount = rpi.GetLedCount();
+                var ledBrightness = rpi.GetBrightness();
+                Console.WriteLine("Brightness:\t" + ledBrightness);
+                Console.WriteLine(ledCount + "LEDs Detected\n\n");
+                rpi.SetLedCount(ledCount);
                 rpi.SetAll(color);
             }
-            Thread.Sleep(100);
+            Thread.Sleep(10);
         }
 	}
 }

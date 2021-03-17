@@ -29,9 +29,13 @@ export class JuliansRoom extends Component {
     }
 
     handleHueChange = value => {
-        this.setState({ lightHue: value }, () => {
-            this.updateLed();
-        });
+        if (Math.abs(this.state.lightHue - value) > 1) {
+            console.log("Previous Hue: " + this.state.lightHue)
+            this.setState({ lightHue: value }, () => {
+                console.log("New Hue: " + value);
+                this.updateLed();
+            });
+        }
     }
 
     handleSaturationChange = value => {
@@ -111,7 +115,7 @@ export class JuliansRoom extends Component {
         const nextColorCls = value >= mid ? 'icon-wrapper-active' : '';
 
     return (
-        <div class=".color-wheel-and-slider">
+        <div className=".color-wheel-and-slider">
             <ColorPicker onInput={hue => this.handleHueChange(hue)} />
             <p>Saturation</p>
             <div className="icon-wrapper">
