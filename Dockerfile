@@ -3,13 +3,14 @@ FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
 WORKDIR /source
 COPY ./ /source
 
+COPY ws2811.so /ws2811.so
+
 # installs NodeJS and NPM
 RUN apt-get update -yq && apt-get upgrade -yq && apt-get install -yq curl git nano
 RUN curl -sL https://deb.nodesource.com/setup_12.x | bash - && apt-get install -yq nodejs build-essential
 
 RUN npm install -g npm
 RUN npm --version
-
 
 # copy csproj and restore as distinct layers
 COPY *.sln .
@@ -25,4 +26,5 @@ RUN dotnet publish -c release -o /app -r linux-arm --self-contained false --no-r
 FROM mcr.microsoft.com/dotnet/aspnet:5.0-buster-slim-arm32v7
 WORKDIR /app
 COPY --from=build /app ./
+COPY ws2811.so ./
 ENTRYPOINT ["./control"]
