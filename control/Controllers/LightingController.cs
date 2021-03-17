@@ -13,9 +13,6 @@ namespace control.Controllers
     [Route("[controller]")]
     public class LightingController : ControllerBase
     {
-        Lighting led = new Lighting();
-
-
         [HttpPost]
         public void ToggleLight([FromBody] Lighting lighting)
         {

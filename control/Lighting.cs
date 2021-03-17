@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using System.Threading;
 using rpi_ws281x;
 
 namespace control
@@ -9,6 +10,13 @@ namespace control
         public int r { get; set; }
         public int g { get; set; }
         public int b { get; set; }
+
+        public Lighting(int r, int g, int b)
+        {
+            this.r = r;
+            this.g = g;
+            this.b = b;
+        }
 
         public void setRgb()
         {
@@ -25,6 +33,7 @@ namespace control
                 rpi.SetLedCount(88);
                 rpi.SetAll(color);
             }
+            Thread.Sleep(100);
         }
 	}
 }
