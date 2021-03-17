@@ -13,15 +13,14 @@ export class JuliansRoom extends Component {
         super(props);
         this.state = {
             lightHue: 0,
-            lightSaturation: 100,
-            lightLuminosity: 50,
+            lightOn: "true"
         };
         this.handleHueChange = this.handleHueChange.bind(this);
-        this.handleSaturationChange = this.handleSaturationChange.bind(this);
-        this.handleLuminosityChange = this.handleLuminosityChange.bind(this);
+        this.handleBrightnessChange = this.handleBrightnessChange.bind(this);
         this.tipFormat = this.tipFormat.bind(this);
         this.updateLed = this.updateLed.bind(this);
         this.HSLtoRGB = this.HSLtoRGB.bind(this);
+        this.handleLedToggle = this.handleLedToggle.bind(this);
     }
 
     tipFormat = (value) => {
@@ -31,29 +30,29 @@ export class JuliansRoom extends Component {
     handleHueChange = value => {
         if (Math.abs(this.state.lightHue - value) > 1) {
             console.log("Previous Hue: " + this.state.lightHue)
-            this.setState({ lightHue: value }, () => {
+            this.setState({ lightHue: value, lightOn : true }, () => {
                 console.log("New Hue: " + value);
                 this.updateLed();
             });
         }
     }
 
-    handleSaturationChange = value => {
-        this.setState({ lightSaturation: value }, () => {
-            this.updateLed();
-        });
+    handleBrightnessChange = value => {
+        //this.setState({ lightSaturation: value }, () => { TODO change brightness
+        //    this.updateLed();
+        //});
     }
 
-    handleLuminosityChange = value => {
-        this.setState({ lightLuminosity: value }, () => {
+    handleLedToggle = () => {
+        this.setState({ lightOn: false}, () => {
             this.updateLed();
         });
     }
 
     HSLtoRGB = (h, s, l) => {
         h = this.state.lightHue;
-        s = this.state.lightSaturation;
-        l = this.state.lightLuminosity;
+        s = 100;
+        l = 50;
 
         var r, g, b, m, c, x
 
@@ -116,8 +115,8 @@ export class JuliansRoom extends Component {
 
     return (
         <div className=".color-wheel-and-slider">
-            <ColorPicker onInput={hue => this.handleHueChange(hue)} />
-            <p>Saturation</p>
+            <ColorPicker onChange={hue => this.handleHueChange(hue)} onSelect={ this.handleLedToggle } />
+            <p>Brightness</p>
             <div className="icon-wrapper">
                 <EllipsisOutlined className={preColorCls} />
                 <Slider
@@ -128,30 +127,22 @@ export class JuliansRoom extends Component {
                 />
                 <BulbOutlined className={nextColorCls} />
             </div>
-
-            <p>Luminosity</p>
-            <div className="icon-wrapper">
-                <CaretDownOutlined className={preColorCls} />
-                <Slider
-                    {... this.props}
-                    defaultValue={50}
-                    tipFormatter={this.tipFormat}
-                    onChange={this.handleLuminosityChange}
-                />
-                <CaretUpOutlined className={nextColorCls} />
-            </div>
     </div>
     );
     }
 
     async updateLed() {
         var rgb = this.HSLtoRGB();
+
         console.log("R: " + rgb.r + "\tG: " + rgb.g + "\tB: " + rgb.b);
+        console.log("Light status: " + this.state.lightOn);
+
         const axios = require('axios');
         axios.post('/Lighting', {
-            r: rgb.r,
-            g: rgb.g,
-            b: rgb.b
+            'r': rgb.r,
+            'g': rgb.g,
+            'b': rgb.b,
+            'lightOn': this.state.lightOn
         });
     }
 }
