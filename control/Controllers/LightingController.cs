@@ -12,5 +12,12 @@ namespace control.Controllers
         {
             lighting.setRgb();
         }
+
+        [Route("[controller]/Yellow")]
+        public void Yellow()
+        {
+            Lighting lighting = new Lighting(0,255,255,true);
+            lighting.setRgb();
+        }
     }
 }

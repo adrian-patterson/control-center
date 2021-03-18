@@ -23,32 +23,32 @@ namespace control
 
         public void setRgb()
         {
-            var settings = Settings.CreateDefaultSettings(false);
-            var controller = settings.AddController(ledCount, Pin.Gpio18, StripType.WS2812_STRIP, 255, false);
+            //var settings = Settings.CreateDefaultSettings(false);
+            //var controller = settings.AddController(ledCount, Pin.Gpio18, StripType.WS2812_STRIP, 255, false);
 
-            using (var rpi = new WS281x(settings))
-            {
+            //using (var rpi = new WS281x(settings))
+            //{
                 if (lightOn == true)
                 {
                     Console.WriteLine("R: " + r + "\tG: " + g + "\tB: " + b);
 
-                    Color color = new Color();
-                    color = Color.FromArgb(r, b, g);
+                    //Color color = new Color();
+                    //color = Color.FromArgb(r, b, g);
 
-                    var ledBrightness = rpi.GetBrightness();
-                    Console.WriteLine("Brightness:\t" + ledBrightness);
-                    rpi.SetLedCount(ledCount);
-                    rpi.SetAll(color);
-                    Console.WriteLine("LED Turned on.");
+                    //var ledBrightness = rpi.GetBrightness();
+                    //Console.WriteLine("Brightness:\t" + ledBrightness);
+                    //rpi.SetLedCount(ledCount);
+                    //rpi.SetAll(color);
+                    //Console.WriteLine("LED Turned on.");
                 }
                 else
                 {
                     Console.WriteLine("LED Turned off.");
-                    rpi.Reset();
-                    rpi.Dispose();
+                    //rpi.Reset();
+                    //rpi.Dispose();
                 }
-            }
-            Thread.Sleep(100);
+            //}
+            //Thread.Sleep(100);
         }
     }
 }
