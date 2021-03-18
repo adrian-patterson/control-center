@@ -2,6 +2,9 @@
 IoT home-hub using dotnet, C#, React.js, and docker.
 Home-server for controlling LEDs and other home devices. Work in progress; for future I hope to integrate a home security system, calendar, weather, and other features.
 
+### Quick Copy & Paste Docker Run Commands
+> `docker build -t control-center . && docker run --privileged -p 8000:80 control-center`
+
 ## Full List of Technologies
 * **Hardware**
   * Raspberry Pi
