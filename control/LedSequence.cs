@@ -27,24 +27,24 @@ namespace control
         {
             Console.WriteLine("Rainbow Sequence Called");
 
-            //var settings = LedInit();
-            //using var rpi = new WS281x(settings);
+            var settings = LedInit();
+            using var rpi = new WS281x(settings);
 
-            //int colorOffset = 0;
+            int colorOffset = 0;
 
-            //while (true)
-            //{
-            //    var colors = GetRainbowColors();
-            //    for (var i = 0; i < ledCount; i++)
-            //    {
-            //        var colorIndex = (i + colorOffset) % colors.Count;
-            //        rpi.SetLed(i, colors[colorIndex]);
-            //    }
-            //    rpi.Render();
-            //    colorOffset = (colorOffset + 1) % colors.Count;
+            while (true)
+            {
+                var colors = GetRainbowColors();
+                for (var i = 0; i < ledCount; i++)
+                {
+                    var colorIndex = (i + colorOffset) % colors.Count;
+                    rpi.SetLed(i, colors[colorIndex]);
+                }
+                rpi.Render();
+                colorOffset = (colorOffset + 1) % colors.Count;
 
-            //    Thread.Sleep(500);
-            //}
+                Thread.Sleep(500);
+            }
         }
         public rpi_ws281x.Settings LedInit()
         {
