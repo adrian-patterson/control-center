@@ -27,28 +27,28 @@ namespace control
         public void SetRgb()
         {
             Console.WriteLine("Set RGB Function Called");
-            var settings = LedInit();
-            using (var rpi = new WS281x(settings))
-            {
-                if (lightOn == true)
-                {
-                    Console.WriteLine("R: " + r + "\tG: " + g + "\tB: " + b);
-                    Console.WriteLine("Brightness: " + brightness);
+            //var settings = LedInit();
+            //using (var rpi = new WS281x(settings))
+            //{
+            //    if (lightOn == true)
+            //    {
+            //        Console.WriteLine("R: " + r + "\tG: " + g + "\tB: " + b);
+            //        Console.WriteLine("Brightness: " + brightness);
 
-                    Color color = new Color();
-                    color = Color.FromArgb(r, b, g);
+            //        Color color = new Color();
+            //        color = Color.FromArgb(r, b, g);
 
-                    rpi.SetBrightness(brightness);
-                    rpi.SetLedCount(ledCount);
-                    rpi.SetAll(color);
-                }
-                else
-                {
-                    Console.WriteLine("LED Turned off.");
-                    rpi.Reset();
-                    rpi.Dispose();
-                }
-            }
+            //        rpi.SetBrightness(brightness);
+            //        rpi.SetLedCount(ledCount);
+            //        rpi.SetAll(color);
+            //    }
+            //    else
+            //    {
+            //        Console.WriteLine("LED Turned off.");
+            //        rpi.Reset();
+            //        rpi.Dispose();
+            //    }
+            //}
             Thread.Sleep(100);
         }
         
