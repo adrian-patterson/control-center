@@ -1,22 +1,15 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-
+using System;
 
 namespace control.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
     public class LightingController : ControllerBase
     {
+        [Route("[controller]/SetRgb")]
         [HttpPost]
-        public void ToggleLight([FromBody] Lighting lighting)
+        public void SetRgb([FromBody] Lighting lighting)
         {
-            lighting.setRgb();
-        }
-
-        [Route("[controller]/Yellow")]
-        public void Yellow()
-        {
-            Lighting lighting = new Lighting(0,255,255,true);
             lighting.setRgb();
         }
     }
