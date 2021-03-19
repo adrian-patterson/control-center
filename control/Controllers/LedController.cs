@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace control.Controllers
 {
@@ -10,14 +12,21 @@ namespace control.Controllers
         [HttpPost]
         public void SetRgb([FromBody] LedColor ledColor)
         {
-            ledColor.SetRgb();
+            Task.Run(() =>
+            {
+                ledColor.SetRgb();
+            }).Wait();
         }
 
         [Route("[controller]/Sequence")]
         [HttpPost]
         public void SetSequence([FromBody] LedSequence ledSequence)
         {
-            ledSequence.ExecuteSequence();
+            Task.Run(() =>
+            {
+                ledSequence.ExecuteSequence();
+            }).Wait();
+            
         }
     }
 }

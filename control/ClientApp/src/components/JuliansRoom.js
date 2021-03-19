@@ -159,7 +159,7 @@ export class JuliansRoom extends Component {
         const min = 0;
         const { value } = this.state;
         const mid = ((max - min) / 2).toFixed(5);
-        const preColorCls = value >= mid ? '' : 'icon-wrapper-active';
+        const preColorCls = value <= mid ? '' : 'icon-wrapper-active';
         const nextColorCls = value >= mid ? 'icon-wrapper-active' : '';
         const loadings = this.state.loadings;
         return (
@@ -173,7 +173,7 @@ export class JuliansRoom extends Component {
                     {... this.props}
                     defaultValue={100}
                     tipFormatter={this.tipFormat}
-                    onAfterChange={this.handleBrightnessChange}
+                    onChange={this.handleBrightnessChange}
                     step={10}
                         />
                 <BulbOutlined className={nextColorCls} />

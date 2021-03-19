@@ -43,7 +43,7 @@ namespace control
                     rpi.Render();
                     colorOffset = (colorOffset + 1) % colors.Count;
 
-                    Thread.Sleep(350);
+                    Thread.Sleep(100);
                 }
             }
         }

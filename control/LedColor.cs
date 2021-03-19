@@ -27,6 +27,7 @@ namespace control
         public void SetRgb()
         {
             Console.WriteLine("Set RGB Function Called");
+
             var settings = LedInit();
             using (var rpi = new WS281x(settings))
             {
@@ -51,6 +52,7 @@ namespace control
             }
             Thread.Sleep(100);
         }
+
         
         // LED Initialization
         public rpi_ws281x.Settings LedInit()
