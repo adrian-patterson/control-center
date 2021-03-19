@@ -5,6 +5,8 @@ import 'antd/dist/antd.css';
 import React, { Component } from 'react';
 import { BulbOutlined, EllipsisOutlined, BgColorsOutlined } from '@ant-design/icons';
 import Center from 'react-center';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 export class JuliansRoom extends Component {
@@ -54,6 +56,15 @@ export class JuliansRoom extends Component {
 
     handleLedToggle = () => {
         this.setState({ lightOn: false }, () => {
+            toast.dark('LEDs Turned Off.', {
+                position: "bottom-center",
+                autoClose: 4000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+            });
             this.setRgb();
         });
     }
@@ -156,26 +167,39 @@ export class JuliansRoom extends Component {
             <Center>
                 <ColorPicker size="large" onChange={hue => this.handleHueChange(hue)} onSelect={this.handleLedToggle} />
             </Center>
-                    <p>Brightness</p>
             <div className="icon-wrapper">
-                <EllipsisOutlined className={preColorCls} />
+                    <EllipsisOutlined className={preColorCls} />
                 <Slider
                     {... this.props}
                     defaultValue={100}
                     tipFormatter={this.tipFormat}
                     onAfterChange={this.handleBrightnessChange}
-                />
+                    step={10}
+                        />
                 <BulbOutlined className={nextColorCls} />
                 </div>
-            <Button
+            <Center>
+            <Button className="sequence-btn"
                 type="primary"
                 icon={<BgColorsOutlined />}
                 loading={loadings[1]}
-                onClick={() => this.handleSequenceSelection("Rainbow")}//this.enterLoading(1)
-                size="medium"
+                onClick={() => this.handleSequenceSelection("Rainbow")}
+                size="large"
             >
-                Rainbow
+                        Rainbow
             </Button>
+            </Center>
+            <ToastContainer
+                position="bottom-center"
+                autoClose={5000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+            />
         </div>
     );
     }
