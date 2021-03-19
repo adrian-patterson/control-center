@@ -1,9 +1,10 @@
 import ColorPicker from '@radial-color-picker/react-color-picker';
 import '@radial-color-picker/react-color-picker/dist/react-color-picker.min.css';
-import { Slider } from 'antd';
+import { Slider, Button } from 'antd';
 import 'antd/dist/antd.css';
 import React, { Component } from 'react';
-import { BulbOutlined, EllipsisOutlined } from '@ant-design/icons';
+import { BulbOutlined, EllipsisOutlined, BgColorsOutlined } from '@ant-design/icons';
+import Center from 'react-center';
 
 
 export class JuliansRoom extends Component {
@@ -14,14 +15,18 @@ export class JuliansRoom extends Component {
         this.state = {
             lightHue: 0,
             lightOn: "true",
-            lightBrightness: 255
+            lightBrightness: 255,
+            loadings: [],
+            selectedSequence: ""
         };
         this.handleHueChange = this.handleHueChange.bind(this);
         this.handleBrightnessChange = this.handleBrightnessChange.bind(this);
         this.tipFormat = this.tipFormat.bind(this);
         this.setRgb = this.setRgb.bind(this);
-        this.HSLtoRGB = this.HSLtoRGB.bind(this);
+        this.hslToRgb = this.hslToRgb.bind(this);
         this.handleLedToggle = this.handleLedToggle.bind(this);
+        this.handleSequenceSelection = this.handleSequenceSelection.bind(this);
+        this.enterLoading = this.enterLoading.bind(this);
     }
 
     tipFormat = (value) => {
@@ -53,7 +58,7 @@ export class JuliansRoom extends Component {
         });
     }
 
-    HSLtoRGB = (h, s, l) => {
+    hslToRgb = (h, s, l) => {
         h = this.state.lightHue;
         s = 100;
         l = 50;
@@ -108,6 +113,35 @@ export class JuliansRoom extends Component {
         return { r: r, g: g, b: b }
     }
 
+    handleSequenceSelection = value => {
+        this.setState({ selectedSequence: value }, () => {
+            this.enterLoading(1);
+            this.setSequence();
+        });
+    }
+
+    enterLoading = index => {
+        this.setState(({ loadings }) => {
+            const newLoadings = [...loadings];
+            newLoadings[index] = true;
+
+            return {
+                loadings: newLoadings,
+            };
+        });
+        setTimeout(() => {
+            this.setState(({ loadings }) => {
+                const newLoadings = [...loadings];
+                newLoadings[index] = false;
+
+                return {
+                    loadings: newLoadings,
+                };
+            });
+        }, 400);
+    };
+
+
 
     render() {
         const max = 100;
@@ -116,11 +150,13 @@ export class JuliansRoom extends Component {
         const mid = ((max - min) / 2).toFixed(5);
         const preColorCls = value >= mid ? '' : 'icon-wrapper-active';
         const nextColorCls = value >= mid ? 'icon-wrapper-active' : '';
-
-    return (
-        <div className=".color-wheel-and-slider">
-            <ColorPicker onChange={hue => this.handleHueChange(hue)} onSelect={ this.handleLedToggle } />
-            <p>Brightness</p>
+        const loadings = this.state.loadings;
+        return (
+            <div>
+            <Center>
+                <ColorPicker size="large" onChange={hue => this.handleHueChange(hue)} onSelect={this.handleLedToggle} />
+            </Center>
+                    <p>Brightness</p>
             <div className="icon-wrapper">
                 <EllipsisOutlined className={preColorCls} />
                 <Slider
@@ -130,21 +166,37 @@ export class JuliansRoom extends Component {
                     onAfterChange={this.handleBrightnessChange}
                 />
                 <BulbOutlined className={nextColorCls} />
-            </div>
-    </div>
+                </div>
+            <Button
+                type="primary"
+                icon={<BgColorsOutlined />}
+                loading={loadings[1]}
+                onClick={() => this.handleSequenceSelection("Rainbow")}//this.enterLoading(1)
+                size="medium"
+            >
+                Rainbow
+            </Button>
+        </div>
     );
     }
 
     async setRgb() {
-        var rgb = this.HSLtoRGB();
+        var rgb = this.hslToRgb();
 
         const axios = require('axios');
-        axios.post('/Lighting/SetRgb', {
+        axios.post('/Led/Color', {
             'r': rgb.r,
             'g': rgb.g,
             'b': rgb.b,
             'brightness': this.state.lightBrightness,
             'lightOn': this.state.lightOn
+        });
+    }
+
+    async setSequence() {
+        const axios = require('axios');
+        axios.post('/Led/Sequence', {
+            'sequence': this.state.selectedSequence
         });
     }
 }
