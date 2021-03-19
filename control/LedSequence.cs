@@ -28,28 +28,35 @@ namespace control
             Console.WriteLine("Rainbow Sequence Called");
 
             var settings = LedInit();
-            using var rpi = new WS281x(settings);
-
-            int colorOffset = 0;
-
-            while (true)
+            using (var rpi = new WS281x(settings))
             {
-                var colors = GetRainbowColors();
-                for (var i = 0; i < ledCount; i++)
-                {
-                    var colorIndex = (i + colorOffset) % colors.Count;
-                    rpi.SetLed(i, colors[colorIndex]);
-                }
-                rpi.Render();
-                colorOffset = (colorOffset + 1) % colors.Count;
+                int colorOffset = 0;
 
-                Thread.Sleep(500);
+                while (true)
+                {
+                    var colors = GetRainbowColors();
+                    for (var i = 0; i < ledCount; i++)
+                    {
+                        var colorIndex = (i + colorOffset) % colors.Count;
+                        rpi.SetLed(i, colors[colorIndex]);
+                    }
+                    rpi.Render();
+                    colorOffset = (colorOffset + 1) % colors.Count;
+
+                    Thread.Sleep(350);
+                }
             }
         }
         public rpi_ws281x.Settings LedInit()
         {
             var settings = Settings.CreateDefaultSettings(false);
             settings.AddController(ledCount, Pin.Gpio18, StripType.WS2812_STRIP, 255, false);
+
+            using (var rpi = new WS281x(settings))
+            {
+                rpi.Reset();
+                rpi.Dispose();
+            }
 
             return settings;
         }
