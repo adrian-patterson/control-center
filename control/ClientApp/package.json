@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@ant-design/icons": "^4.5.0",
+    "@babel/plugin-transform-react-jsx": "^7.13.12",
     "@radial-color-picker/react-color-picker": "^3.0.0",
     "antd": "^4.13.1",
     "axios": "^0.21.1",
@@ -14,6 +15,9 @@
     "react": "^16.0.0",
     "react-center": "^1.1.1",
     "react-dom": "^16.0.0",
+    "react-images": "^1.2.0-beta.6",
+    "react-native-images-collage": "^3.3.0",
+    "react-photo-gallery": "^8.0.0",
     "react-rangeslider": "^2.2.0",
     "react-router-bootstrap": "^0.25.0",
     "react-router-dom": "^5.1.2",

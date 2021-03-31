@@ -3,7 +3,7 @@ import '@radial-color-picker/react-color-picker/dist/react-color-picker.min.css'
 import { Slider, Button } from 'antd';
 import 'antd/dist/antd.css';
 import React, { Component } from 'react';
-import { BulbOutlined, EllipsisOutlined, BgColorsOutlined } from '@ant-design/icons';
+import { BulbOutlined, EllipsisOutlined, BgColorsOutlined, RetweetOutlined, ApartmentOutlined, BugOutlined } from '@ant-design/icons';
 import Center from 'react-center';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -126,7 +126,54 @@ export class JuliansRoom extends Component {
 
     handleSequenceSelection = value => {
         this.setState({ selectedSequence: value }, () => {
-            this.enterLoading(1);
+            if (value == "Rainbow") {
+                this.enterLoading(1);
+                toast('Rainbow Sequence Activated!', {
+                    position: "bottom-center",
+                    autoClose: 4000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });
+            }
+            if (value == "Carousel") {
+                this.enterLoading(2);
+                toast.warning('Carousel Sequence Activated!', {
+                    position: "bottom-center",
+                    autoClose: 4000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });
+            }
+            if (value == "RGB") {
+                this.enterLoading(3);
+                toast.error('RGB Sequence Activated!', {
+                    position: "bottom-center",
+                    autoClose: 4000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });
+            }
+            if (value == "Jungle") {
+                this.enterLoading(4);
+                toast.success('Jungle Sequence Activated!', {
+                    position: "bottom-center",
+                    autoClose: 4000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });
+            }
             this.setSequence();
         });
     }
@@ -149,7 +196,7 @@ export class JuliansRoom extends Component {
                     loadings: newLoadings,
                 };
             });
-        }, 400);
+        }, 750);
     };
 
 
@@ -173,7 +220,7 @@ export class JuliansRoom extends Component {
                     {... this.props}
                     defaultValue={100}
                     tipFormatter={this.tipFormat}
-                    onChange={this.handleBrightnessChange}
+                    onAfterChange={this.handleBrightnessChange}
                     step={10}
                         />
                 <BulbOutlined className={nextColorCls} />
@@ -186,7 +233,36 @@ export class JuliansRoom extends Component {
                 onClick={() => this.handleSequenceSelection("Rainbow")}
                 size="large"
             >
-                        Rainbow
+                    Rainbow
+            </Button>
+            <Button className="sequence-btn"
+                type="primary"
+                icon={<RetweetOutlined />}
+                loading={loadings[2]}
+                onClick={() => this.handleSequenceSelection("Carousel")}
+                size="large"
+            >
+                    Carousel
+            </Button>
+            </Center>
+            <Center>
+                <Button className="sequence-btn"
+                    type="primary"
+                    icon={<ApartmentOutlined />}
+                    loading={loadings[3]}
+                    onClick={() => this.handleSequenceSelection("RGB")}
+                    size="large"
+                >
+                    RGB
+            </Button>
+                <Button className="sequence-btn"
+                    type="primary"
+                    icon={<BugOutlined />}
+                    loading={loadings[4]}
+                    onClick={() => this.handleSequenceSelection("Jungle")}
+                    size="large"
+                >
+                        Jungle
             </Button>
             </Center>
             <ToastContainer

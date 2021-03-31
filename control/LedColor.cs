@@ -47,7 +47,6 @@ namespace control
                 {
                     Console.WriteLine("LED Turned off.");
                     rpi.Reset();
-                    rpi.Dispose();
                 }
             }
             Thread.Sleep(100);
@@ -58,13 +57,15 @@ namespace control
         public rpi_ws281x.Settings LedInit()
         {
             var settings = Settings.CreateDefaultSettings(false);
-            var controller = settings.AddController(ledCount, Pin.Gpio18, StripType.WS2812_STRIP, 255, false);
+            _ = settings.AddController(ledCount, Pin.Gpio18, StripType.WS2812_STRIP, 255, false);
 
             using (var rpi = new WS281x(settings))
             {
                 rpi.Reset();
-                rpi.Dispose();
             }
+
+            Thread.Sleep(100);
+
             return settings;
         }
     }
