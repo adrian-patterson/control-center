@@ -13,6 +13,7 @@ namespace control
     {
         public static WS281x rpi;
         public static readonly int ledCount = 88;
+        public static int ledBrightness = 255;
         public static Thread rainbow, carousel, rgb, jungle;
         public static List<Thread> threads = new();
         public static List<Color> rainbowColors, carouselColors, rgbColors;
@@ -55,7 +56,8 @@ namespace control
 
         public static void SetBrightness(int brightness)
         {
-            rpi.SetBrightness(brightness);
+            ledBrightness = brightness;
+            rpi.SetBrightness(ledBrightness);
             rpi.Render();
         }
 
@@ -119,7 +121,7 @@ namespace control
                             SetSpecificLed(i, rainbowColors[colorIndex]);
                         }
                         rainbowColorOffset = (rainbowColorOffset + 1) % rainbowColors.Count;
-                        Thread.Sleep(500);
+                        Thread.Sleep(200);
                     }
                 }
                 catch (ThreadInterruptedException e)
@@ -146,7 +148,7 @@ namespace control
                             SetSpecificLed(i, carouselColors[colorIndex]);
                         }
                         carouselColorOffset = (carouselColorOffset + 1) % carouselColors.Count;
-                        Thread.Sleep(500);
+                        Thread.Sleep(200);
                     }
                 }
                 catch (ThreadInterruptedException e)
@@ -230,7 +232,7 @@ namespace control
 
             carouselColors = new List<Color>
             {
-                Color.White,
+                Color.LightGoldenrodYellow,
                 Color.Black
             };
 

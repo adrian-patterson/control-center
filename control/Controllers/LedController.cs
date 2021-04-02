@@ -35,5 +35,15 @@ namespace control.Controllers
             if (ledSequence.sequence == "Rgb") Program.Rgb();
             if (ledSequence.sequence == "Jungle") Program.Jungle();
         }
+
+        [Route("[controller]/TurnOffLeds")]
+        [HttpPost]
+        public void TurnOff([FromBody] LedState ledState)
+        {
+            if (ledState.lightOn == false)
+            {
+                Program.ClearLeds();
+            }
+        }
     }
 }

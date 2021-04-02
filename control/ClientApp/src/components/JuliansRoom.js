@@ -69,7 +69,7 @@ export class JuliansRoom extends Component {
 
     handleLedOff = () => {
         this.setState({ lightBrightness: 0 }, () => {
-            this.setBrightness();
+            this.clearLeds();
         });
     }
 
@@ -224,7 +224,7 @@ export class JuliansRoom extends Component {
                     {... this.props}
                     defaultValue={100}
                     tipFormatter={this.tipFormat}
-                    onAfterChange={this.handleBrightnessChange}
+                    onChange={this.handleBrightnessChange}
                     step={10}
                         />
                 <BulbOutlined className={nextColorCls} />
@@ -307,6 +307,13 @@ export class JuliansRoom extends Component {
         const axios = require('axios');
         axios.post('/Led/Sequence', {
             'sequence': this.state.selectedSequence
+        });
+    }
+
+    async clearLeds() {
+        const axios = require('axios');
+        axios.post('/Led/TurnOffLeds', {
+            'lightOn': false
         });
     }
 }
