@@ -66,45 +66,41 @@ namespace control
 
         public static void Rainbow()
         {
-            if (carousel.IsAlive) carousel.Interrupt();
-            if (rgb.IsAlive) rgb.Interrupt();
-            if (jungle.IsAlive) jungle.Interrupt();
+            KillAllThreads();
 
             rainbow = NewRainbowThread();
             rainbow.Start();
-            threads.Add(rainbow);
         }
         public static void Carousel()
         {
-            if (rainbow.IsAlive) rainbow.Interrupt();
-            if (rgb.IsAlive) rgb.Interrupt();
-            if (jungle.IsAlive) jungle.Interrupt();
+            KillAllThreads();
 
             carousel = NewCarouselThread();
             carousel.Start();
-            threads.Add(carousel);
         }
 
         public static void Rgb()
         {
-            if (carousel.IsAlive) carousel.Interrupt();
-            if (rainbow.IsAlive) rainbow.Interrupt();
-            if (jungle.IsAlive) jungle.Interrupt();
+            KillAllThreads();
 
             rgb = NewRgbThread();
             rgb.Start();
-            threads.Add(carousel);
         }
 
         public static void Jungle()
         {
-            if (carousel.IsAlive) carousel.Interrupt();
-            if (rainbow.IsAlive) rainbow.Interrupt();
-            if (rgb.IsAlive) rgb.Interrupt();
+            KillAllThreads();
 
             jungle = NewJungleThread();
             jungle.Start();
-            threads.Add(jungle);
+        }
+
+        public static void KillAllThreads()
+        {
+            if (carousel.IsAlive) carousel.Interrupt();
+            if (rainbow.IsAlive) rainbow.Interrupt();
+            if (rgb.IsAlive) rgb.Interrupt();
+            if (jungle.IsAlive) jungle.Interrupt();
         }
 
         public static Thread NewRainbowThread()
@@ -171,11 +167,8 @@ namespace control
                         Console.WriteLine("Rgb Sequence");
                         foreach (var color in rgbColors)
                         {
-                            for (var i = 0; i < ledCount; i++)
-                            {
-                                SetSpecificLed(i, color);
-                                Thread.Sleep(500);
-                            }
+                            SetAllLeds(color);   
+                            Thread.Sleep(1000);
                         }
                     }
                 }
@@ -206,7 +199,7 @@ namespace control
                             SetAllLeds(shadeOfGreen);
 
                             g--;
-                            Thread.Sleep(500);
+                            Thread.Sleep(100);
                         }
                         while (g < 255)
                         {
@@ -215,7 +208,7 @@ namespace control
                             SetAllLeds(shadeOfGreen);
 
                             g++;
-                            Thread.Sleep(200);
+                            Thread.Sleep(100);
                         }
                     }
                 }

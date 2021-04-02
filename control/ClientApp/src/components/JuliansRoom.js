@@ -37,7 +37,6 @@ export class JuliansRoom extends Component {
 
     handleHueChange = value => {
         if (Math.abs(this.state.lightHue - value) > 1) {
-            console.log("Previous Hue: " + this.state.lightHue)
             this.setState({ lightHue: value, lightOn : true }, () => {
                 console.log("New Hue: " + value);
                 this.setRgb();
@@ -49,8 +48,7 @@ export class JuliansRoom extends Component {
         var brightness = parseInt(value * (255 / 100));
         
         this.setState({ lightBrightness: brightness }, () => {
-            console.log("Brightness before setting RGB: " +this.state.lightBrightness);
-            this.setRgb();
+            this.setBrightness();
         });
     }
 
@@ -66,6 +64,12 @@ export class JuliansRoom extends Component {
                 progress: undefined,
             });
             this.setRgb();
+        });
+    }
+
+    handleLedOff = () => {
+        this.setState({ lightBrightness: 0 }, () => {
+            this.setBrightness();
         });
     }
 
@@ -140,7 +144,7 @@ export class JuliansRoom extends Component {
             }
             if (value == "Carousel") {
                 this.enterLoading(2);
-                toast.warning('Carousel Sequence Activated!', {
+                toast('Carousel Sequence Activated!', {
                     position: "bottom-center",
                     autoClose: 4000,
                     hideProgressBar: false,
@@ -152,7 +156,7 @@ export class JuliansRoom extends Component {
             }
             if (value == "RGB") {
                 this.enterLoading(3);
-                toast.error('RGB Sequence Activated!', {
+                toast('RGB Sequence Activated!', {
                     position: "bottom-center",
                     autoClose: 4000,
                     hideProgressBar: false,
@@ -164,7 +168,7 @@ export class JuliansRoom extends Component {
             }
             if (value == "Jungle") {
                 this.enterLoading(4);
-                toast.success('Jungle Sequence Activated!', {
+                toast('Jungle Sequence Activated!', {
                     position: "bottom-center",
                     autoClose: 4000,
                     hideProgressBar: false,
@@ -211,8 +215,8 @@ export class JuliansRoom extends Component {
         const loadings = this.state.loadings;
         return (
             <div>
-            <Center>
-                <ColorPicker size="large" onChange={hue => this.handleHueChange(hue)} onSelect={this.handleLedToggle} />
+                <Center>
+                    <ColorPicker size="large" onChange={hue => this.handleHueChange(hue)} onSelect={this.handleLedOff} />
             </Center>
             <div className="icon-wrapper">
                     <EllipsisOutlined className={preColorCls} />
@@ -288,6 +292,14 @@ export class JuliansRoom extends Component {
             'r': rgb.r,
             'g': rgb.g,
             'b': rgb.b
+        });
+    }
+
+    async setBrightness() {
+
+        const axios = require('axios');
+        axios.post('/Led/Brightness', {
+            'brightness': this.state.lightBrightness
         });
     }
 

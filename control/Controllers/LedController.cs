@@ -14,7 +14,16 @@ namespace control.Controllers
         public void SetRgb([FromBody] LedColor ledColor)
         {
             var color = Color.FromArgb(ledColor.r, ledColor.b, ledColor.g);
+            Program.KillAllThreads();
             Program.SetAllLeds(color);
+        }
+
+        [Route("[controller]/Brightness")]
+        [HttpPost]
+        public void SetBrightness([FromBody] LedBrightness brightness)
+        {
+            Program.KillAllThreads();
+            Program.SetBrightness(brightness.brightness);
         }
 
         [Route("[controller]/Sequence")]
