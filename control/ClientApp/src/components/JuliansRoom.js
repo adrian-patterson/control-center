@@ -250,7 +250,7 @@ export class JuliansRoom extends Component {
                     type="primary"
                     icon={<ApartmentOutlined />}
                     loading={loadings[3]}
-                    onClick={() => this.handleSequenceSelection("RGB")}
+                    onClick={() => this.handleSequenceSelection("Rgb")}
                     size="large"
                 >
                     RGB
@@ -287,9 +287,7 @@ export class JuliansRoom extends Component {
         axios.post('/Led/Color', {
             'r': rgb.r,
             'g': rgb.g,
-            'b': rgb.b,
-            'brightness': this.state.lightBrightness,
-            'lightOn': this.state.lightOn
+            'b': rgb.b
         });
     }
 

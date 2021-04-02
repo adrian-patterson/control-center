@@ -11,8 +11,13 @@ export class Home extends Component {
 
     return (
       <div>
-            <h1>Welcome Julian</h1>
-            <Center><h3>Oh, Word?</h3></Center>
+            
+            <Center>
+                <h1>Welcome Julian</h1>
+            </Center>
+            <Center>
+                <h3>Oh, Word?</h3>
+            </Center>
             <div>
                 <Gallery photos={photos} />
             </div>
