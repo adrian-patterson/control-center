@@ -17,7 +17,8 @@ Home-server for controlling LEDs and other home devices. Work in progress; for f
 * .NET core and Node.js (as seen in the [Dockerfile](https://github.com/canadrian72/ControlCenter/blob/master/Dockerfile)
 * [rpi_ws281x-csharp library (forked)](https://github.com/d8ahazard/rpi-ws281x-csharp/) for .NET 5.0 Core
   * Installed with NuGet packet manager
-* Built rpi_ws281x shared C-Library (ws2811.so) NEEDS to be in working directory of Dockerfile [build instructions](https://github.com/d8ahazard/rpi-ws281x-csharp/tree/master/lib) 
+* Built rpi_ws281x shared C-Library (ws2811.so) NEEDS to be in working directory of Dockerfile 
+  * [Build instructions](https://github.com/d8ahazard/rpi-ws281x-csharp/tree/master/lib) 
 ## How to Run
 1. Clone this repository from Raspberry Pi running Raspbian
 2. `cd` into directory with Dockerfile
