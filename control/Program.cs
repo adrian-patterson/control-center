@@ -211,7 +211,7 @@ namespace control
                         progress += 0.01f;
 
                         SetAllLeds(color);
-                        Thread.Sleep(100);
+                        Thread.Sleep(50);
                         if (progress >= 1.0f)
                             progress = 0;
                     }
@@ -227,19 +227,18 @@ namespace control
         {
             return new Thread(() =>
             {
-                int r = 15;
+                int r = 20;
                 int g = 255;
-                int b = 15;
+                int b = 20;
 
                 try
                 {
                     while (true)
                     {
                         Color shadeOfGreen = new Color();
-                        while (g <= 255 && g > 50)
+                        while (g <= 255 && g > 25)
                         {
                             shadeOfGreen = Color.FromArgb(r, b, g);
-                            Console.WriteLine("Jungle Sequence: Color at " + shadeOfGreen);
                             SetAllLeds(shadeOfGreen);
 
                             g--;
@@ -248,7 +247,6 @@ namespace control
                         while (g < 255)
                         {
                             shadeOfGreen = Color.FromArgb(r, b, g);
-                            Console.WriteLine("Jungle Sequence: Color at " + shadeOfGreen);
                             SetAllLeds(shadeOfGreen);
 
                             g++;
@@ -267,8 +265,8 @@ namespace control
         {
             return new Thread(() =>
             {
-                int r = 15;
-                int g = 15;
+                int r = 20;
+                int g = 20;
                 int b = 255;
 
                 try
@@ -276,23 +274,21 @@ namespace control
                     while (true)
                     {
                         Color shadeOfGreen = new Color();
-                        while (b <= 255 && b > 50)
+                        while (b <= 255 && b > 25)
                         {
                             shadeOfGreen = Color.FromArgb(r, b, g);
-                            Console.WriteLine("Ocean Sequence: Color at " + shadeOfGreen);
                             SetAllLeds(shadeOfGreen);
 
                             b--;
-                            Thread.Sleep(10);
+                            Thread.Sleep(20);
                         }
                         while (b < 255)
                         {
                             shadeOfGreen = Color.FromArgb(r, b, g);
-                            Console.WriteLine("Ocean Sequence: Color at " + shadeOfGreen);
                             SetAllLeds(shadeOfGreen);
 
                             b++;
-                            Thread.Sleep(10);
+                            Thread.Sleep(20);
                         }
                     }
                 }
@@ -355,7 +351,7 @@ namespace control
                     return Color.FromArgb(255, 0, descending, 255);
                 case 4:
                     return Color.FromArgb(255, ascending, 0, 255);
-                default: // case 5:
+                default: 
                     return Color.FromArgb(255, 255, 0, descending);
             }
         }
