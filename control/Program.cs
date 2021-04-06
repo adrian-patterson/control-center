@@ -14,9 +14,8 @@ namespace control
     {
         public static WS281x rpi;
         public static readonly int ledCount = 88;
-        public static int ledBrightness = 255;
         public static float lastSelectedHue = 0;
-        public static Thread rainbow, carousel, rgb, jungle;
+        public static Thread rainbow, carousel, rgb, jungle, oscillate;
         public static List<Thread> threads = new();
         public static List<Color> rainbowColors, carouselColors, rgbColors;
 
@@ -48,7 +47,6 @@ namespace control
         {
             rpi.SetAll(color);
             rpi.Render();
-            Thread.Sleep(10);
         }
 
         public static void SetSpecificLed(int number, Color color)
@@ -60,13 +58,13 @@ namespace control
         public static void SetBrightness(int brightness)
         {
             KillAllThreads();
-            rpi.SetBrightness(ledBrightness);
+            rpi.SetBrightness(brightness);
             rpi.Render();
-            Thread.Sleep(10);
         }
 
         public static void ClearLeds()
         {
+            KillAllThreads();
             rpi.Reset();
         }
 
@@ -101,12 +99,21 @@ namespace control
             jungle.Start();
         }
 
+        public static void Oscillate()
+        {
+            KillAllThreads();
+
+            oscillate = NewOscillateThread();
+            oscillate.Start();
+        }
+
         public static void KillAllThreads()
         {
             if (carousel.IsAlive)   carousel.Interrupt();
             if (rainbow.IsAlive)    rainbow.Interrupt();
             if (rgb.IsAlive)        rgb.Interrupt();
             if (jungle.IsAlive)     jungle.Interrupt();
+            if (oscillate.IsAlive)  oscillate.Interrupt();
         }
 
         public static Thread NewRainbowThread()
@@ -152,7 +159,7 @@ namespace control
                             SetSpecificLed(i, carouselColors[colorIndex]);
                         }
                         carouselColorOffset = (carouselColorOffset + 1) % carouselColors.Count;
-                        Thread.Sleep(200);
+                        Thread.Sleep(100);
                     }
                 }
                 catch (ThreadInterruptedException e)
@@ -205,7 +212,7 @@ namespace control
                             SetAllLeds(shadeOfGreen);
 
                             g--;
-                            Thread.Sleep(100);
+                            Thread.Sleep(10);
                         }
                         while (g < 255)
                         {
@@ -214,8 +221,34 @@ namespace control
                             SetAllLeds(shadeOfGreen);
 
                             g++;
-                            Thread.Sleep(100);
+                            Thread.Sleep(10);
                         }
+                    }
+                }
+                catch (ThreadInterruptedException e)
+                {
+                    Console.WriteLine(e.StackTrace);
+                }
+            });
+        }
+
+        public static Thread NewOscillateThread()
+        {
+            return new Thread(() =>
+            {
+                try
+                {
+                    float progress = 0;
+                    while (true)
+                    {
+                        var color = OscillateColors(progress);
+                        progress += 0.01f;
+                        Console.WriteLine(color+" when progress at "+progress);
+
+                        SetAllLeds(color);
+                        Thread.Sleep(10);
+                        if (progress >= 1.0f)
+                            progress = 0;
                     }
                 }
                 catch (ThreadInterruptedException e)
@@ -236,7 +269,7 @@ namespace control
 
             carouselColors = new List<Color>
             {
-                Color.LightGoldenrodYellow,
+                Color.Yellow,
                 Color.Black
             };
 
@@ -255,6 +288,30 @@ namespace control
             carousel = NewCarouselThread();
             rgb = NewRgbThread();
             jungle = NewJungleThread();
+            oscillate = NewOscillateThread();
+        }
+
+        public static Color OscillateColors(float progress)
+        {
+            float div = (Math.Abs(progress % 1) * 6);
+            int ascending = (int)((div % 1) * 255);
+            int descending = 255 - ascending;
+
+            switch ((int)div)
+            {
+                case 0:
+                    return Color.FromArgb(255, 255, ascending, 0);
+                case 1:
+                    return Color.FromArgb(255, descending, 255, 0);
+                case 2:
+                    return Color.FromArgb(255, 0, 255, ascending);
+                case 3:
+                    return Color.FromArgb(255, 0, descending, 255);
+                case 4:
+                    return Color.FromArgb(255, ascending, 0, 255);
+                default: // case 5:
+                    return Color.FromArgb(255, 255, 0, descending);
+            }
         }
     }
 }

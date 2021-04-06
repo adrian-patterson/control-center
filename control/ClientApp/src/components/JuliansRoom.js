@@ -3,7 +3,7 @@ import '@radial-color-picker/react-color-picker/dist/react-color-picker.min.css'
 import { Slider, Button } from 'antd';
 import 'antd/dist/antd.css';
 import React, { Component } from 'react';
-import { BulbOutlined, EllipsisOutlined, BgColorsOutlined, RetweetOutlined, ApartmentOutlined, BugOutlined } from '@ant-design/icons';
+import { UpCircleTwoTone, BgColorsOutlined, DownCircleTwoTone, RetweetOutlined, ApartmentOutlined, BugOutlined, RadarChartOutlined } from '@ant-design/icons';
 import Center from 'react-center';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -169,6 +169,18 @@ export class JuliansRoom extends Component {
                     progress: undefined,
                 });
             }
+            if (value == "Oscillate") {
+                this.enterLoading(5);
+                toast('Oscillate Sequence Activated!', {
+                    position: "bottom-center",
+                    autoClose: 4000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });
+            }
             this.setSequence();
         });
     }
@@ -207,59 +219,76 @@ export class JuliansRoom extends Component {
         return (
             <div>
                 <Center>
-                    <ColorPicker size="large" onInput={hue => this.handleHueChange(hue)} onSelect={this.handleLedOff} />
-            </Center>
+                <div className="radial-wheel-outline">
+                    <ColorPicker size="large" onChange={hue => this.handleHueChange(hue)} onSelect={this.handleLedOff} />
+                </div>
+                </Center>
+            &nbsp;
+            <div className="slider-outline">
             <div className="icon-wrapper">
-                    <EllipsisOutlined className={preColorCls} />
+                <DownCircleTwoTone className={preColorCls} />
                 <Slider
                     {... this.props}
                     defaultValue={100}
                     tipFormatter={this.tipFormat}
                     onChange={this.handleBrightnessChange}
                     step={10}
-                />
-                <BulbOutlined className={nextColorCls} />
-                </div>
-            <Center>
-            <Button className="sequence-btn"
-                type="primary"
-                icon={<BgColorsOutlined />}
-                loading={loadings[1]}
-                onClick={() => this.handleSequenceSelection("Rainbow")}
-                size="large"
-            >
-                    Rainbow
-            </Button>
-            <Button className="sequence-btn"
-                type="primary"
-                icon={<RetweetOutlined />}
-                loading={loadings[2]}
-                onClick={() => this.handleSequenceSelection("Carousel")}
-                size="large"
-            >
-                    Carousel
-            </Button>
-            </Center>
-            <Center>
+                    />
+                <UpCircleTwoTone className={nextColorCls} />
+                    </div>
+            </div>
+                &nbsp;
+            <div className="buttons-outline">
+                <Center>
                 <Button className="sequence-btn"
                     type="primary"
-                    icon={<ApartmentOutlined />}
-                    loading={loadings[3]}
-                    onClick={() => this.handleSequenceSelection("Rgb")}
+                    icon={<BgColorsOutlined />}
+                    loading={loadings[1]}
+                    onClick={() => this.handleSequenceSelection("Rainbow")}
                     size="large"
                 >
-                    RGB
-            </Button>
+                        Rainbow
+                </Button>
                 <Button className="sequence-btn"
                     type="primary"
-                    icon={<BugOutlined />}
-                    loading={loadings[4]}
-                    onClick={() => this.handleSequenceSelection("Jungle")}
+                    icon={<RetweetOutlined />}
+                    loading={loadings[2]}
+                    onClick={() => this.handleSequenceSelection("Carousel")}
                     size="large"
                 >
-                        Jungle
-            </Button>
-            </Center>
+                        Carousel
+                </Button>
+                </Center>
+                <Center>
+                    <Button className="sequence-btn"
+                        type="primary"
+                        icon={<ApartmentOutlined />}
+                        loading={loadings[3]}
+                        onClick={() => this.handleSequenceSelection("Rgb")}
+                        size="large"
+                    >
+                        RGB
+                </Button>
+                    <Button className="sequence-btn"
+                        type="primary"
+                        icon={<BugOutlined />}
+                        loading={loadings[4]}
+                        onClick={() => this.handleSequenceSelection("Jungle")}
+                        size="large"
+                    >
+                            Jungle
+                </Button>
+                <Button className="sequence-btn"
+                            type="primary"
+                            icon={<RadarChartOutlined />}
+                            loading={loadings[4]}
+                            onClick={() => this.handleSequenceSelection("Oscillate")}
+                            size="large"
+                        >
+                            Oscillate
+                </Button>
+                    </Center>
+            </div>
             <ToastContainer
                 position="bottom-center"
                 autoClose={5000}

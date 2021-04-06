@@ -34,10 +34,11 @@ namespace control.Controllers
         [HttpPost]
         public void SetSequence([FromBody] LedSequence ledSequence)
         {
-            if (ledSequence.sequence == "Rainbow")  Program.Rainbow();
-            if (ledSequence.sequence == "Carousel") Program.Carousel();
-            if (ledSequence.sequence == "Rgb")      Program.Rgb();
-            if (ledSequence.sequence == "Jungle")   Program.Jungle();
+            if (ledSequence.sequence == "Rainbow")      Program.Rainbow();
+            if (ledSequence.sequence == "Carousel")     Program.Carousel();
+            if (ledSequence.sequence == "Rgb")          Program.Rgb();
+            if (ledSequence.sequence == "Jungle")       Program.Jungle();
+            if (ledSequence.sequence == "Oscillate")    Program.Oscillate();
         }
 
         [Route("[controller]/TurnOffLeds")]
