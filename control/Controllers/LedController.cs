@@ -14,11 +14,9 @@ namespace control.Controllers
         public void SetRgb([FromBody] LedColor ledColor)
         {
             var color = Color.FromArgb(ledColor.r, ledColor.b, ledColor.g);
-            if (Math.Abs(color.GetHue() - Program.lastSelectedHue) < 1)
-                return;
 
             Program.KillAllThreads();
-            Program.lastSelectedHue = color.GetHue();
+            Program.ClearLeds();
             Program.SetAllLeds(color);
         }
 
@@ -38,6 +36,7 @@ namespace control.Controllers
             if (ledSequence.sequence == "Carousel")     Program.Carousel();
             if (ledSequence.sequence == "Rgb")          Program.Rgb();
             if (ledSequence.sequence == "Jungle")       Program.Jungle();
+            if (ledSequence.sequence == "Ocean")        Program.Ocean();
             if (ledSequence.sequence == "Oscillate")    Program.Oscillate();
         }
 

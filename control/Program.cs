@@ -3,10 +3,8 @@ using Microsoft.Extensions.Hosting;
 using rpi_ws281x;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Drawing;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace control
 {
@@ -14,9 +12,7 @@ namespace control
     {
         public static WS281x rpi;
         public static readonly int ledCount = 88;
-        public static float lastSelectedHue = 0;
-        public static Thread rainbow, carousel, rgb, jungle, oscillate;
-        public static List<Thread> threads = new();
+        public static Thread rainbow, carousel, rgb, jungle, ocean, oscillate;
         public static List<Color> rainbowColors, carouselColors, rgbColors;
 
         public static void Main(string[] args)
@@ -58,13 +54,13 @@ namespace control
         public static void SetBrightness(int brightness)
         {
             KillAllThreads();
+            
             rpi.SetBrightness(brightness);
             rpi.Render();
         }
 
         public static void ClearLeds()
         {
-            KillAllThreads();
             rpi.Reset();
         }
 
@@ -91,13 +87,6 @@ namespace control
             rgb.Start();
         }
 
-        public static void Jungle()
-        {
-            KillAllThreads();
-
-            jungle = NewJungleThread();
-            jungle.Start();
-        }
 
         public static void Oscillate()
         {
@@ -107,12 +96,29 @@ namespace control
             oscillate.Start();
         }
 
+        public static void Jungle()
+        {
+            KillAllThreads();
+
+            jungle = NewJungleThread();
+            jungle.Start();
+        }
+
+        public static void Ocean()
+        {
+            KillAllThreads();
+
+            ocean = NewOceanThread();
+            ocean.Start();
+        }
+
         public static void KillAllThreads()
         {
             if (carousel.IsAlive)   carousel.Interrupt();
             if (rainbow.IsAlive)    rainbow.Interrupt();
             if (rgb.IsAlive)        rgb.Interrupt();
             if (jungle.IsAlive)     jungle.Interrupt();
+            if (ocean.IsAlive)      ocean.Interrupt();
             if (oscillate.IsAlive)  oscillate.Interrupt();
         }
 
@@ -192,6 +198,31 @@ namespace control
             });
         }
 
+        public static Thread NewOscillateThread()
+        {
+            return new Thread(() =>
+            {
+                try
+                {
+                    float progress = 0;
+                    while (true)
+                    {
+                        var color = OscillateColors(progress);
+                        progress += 0.01f;
+
+                        SetAllLeds(color);
+                        Thread.Sleep(100);
+                        if (progress >= 1.0f)
+                            progress = 0;
+                    }
+                }
+                catch (ThreadInterruptedException e)
+                {
+                    Console.WriteLine(e.StackTrace);
+                }
+            });
+        }
+
         public static Thread NewJungleThread()
         {
             return new Thread(() =>
@@ -232,23 +263,37 @@ namespace control
             });
         }
 
-        public static Thread NewOscillateThread()
+        public static Thread NewOceanThread()
         {
             return new Thread(() =>
             {
+                int r = 15;
+                int g = 15;
+                int b = 255;
+
                 try
                 {
-                    float progress = 0;
                     while (true)
                     {
-                        var color = OscillateColors(progress);
-                        progress += 0.01f;
-                        Console.WriteLine(color+" when progress at "+progress);
+                        Color shadeOfGreen = new Color();
+                        while (b <= 255 && b > 50)
+                        {
+                            shadeOfGreen = Color.FromArgb(r, b, g);
+                            Console.WriteLine("Ocean Sequence: Color at " + shadeOfGreen);
+                            SetAllLeds(shadeOfGreen);
 
-                        SetAllLeds(color);
-                        Thread.Sleep(10);
-                        if (progress >= 1.0f)
-                            progress = 0;
+                            b--;
+                            Thread.Sleep(10);
+                        }
+                        while (b < 255)
+                        {
+                            shadeOfGreen = Color.FromArgb(r, b, g);
+                            Console.WriteLine("Ocean Sequence: Color at " + shadeOfGreen);
+                            SetAllLeds(shadeOfGreen);
+
+                            b++;
+                            Thread.Sleep(10);
+                        }
                     }
                 }
                 catch (ThreadInterruptedException e)
@@ -270,7 +315,7 @@ namespace control
             carouselColors = new List<Color>
             {
                 Color.Yellow,
-                Color.Black
+                Color.White
             };
 
             rainbowColors = new List<Color>
@@ -289,6 +334,7 @@ namespace control
             rgb = NewRgbThread();
             jungle = NewJungleThread();
             oscillate = NewOscillateThread();
+            ocean = NewOceanThread();
         }
 
         public static Color OscillateColors(float progress)

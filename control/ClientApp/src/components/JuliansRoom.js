@@ -3,7 +3,7 @@ import '@radial-color-picker/react-color-picker/dist/react-color-picker.min.css'
 import { Slider, Button } from 'antd';
 import 'antd/dist/antd.css';
 import React, { Component } from 'react';
-import { UpCircleTwoTone, BgColorsOutlined, DownCircleTwoTone, RetweetOutlined, ApartmentOutlined, BugOutlined, RadarChartOutlined } from '@ant-design/icons';
+import { UpCircleTwoTone, BgColorsOutlined, DownCircleTwoTone, RetweetOutlined, ApartmentOutlined, BugOutlined, RadarChartOutlined, StockOutlined } from '@ant-design/icons';
 import Center from 'react-center';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -157,8 +157,20 @@ export class JuliansRoom extends Component {
                     progress: undefined,
                 });
             }
-            if (value == "Jungle") {
+            if (value == "Oscillate") {
                 this.enterLoading(4);
+                toast('Oscillate Sequence Activated!', {
+                    position: "bottom-center",
+                    autoClose: 4000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });
+            }
+            if (value == "Jungle") {
+                this.enterLoading(5);
                 toast('Jungle Sequence Activated!', {
                     position: "bottom-center",
                     autoClose: 4000,
@@ -169,9 +181,9 @@ export class JuliansRoom extends Component {
                     progress: undefined,
                 });
             }
-            if (value == "Oscillate") {
-                this.enterLoading(5);
-                toast('Oscillate Sequence Activated!', {
+            if (value == "Ocean") {
+                this.enterLoading(6);
+                toast('Ocean Sequence Activated!', {
                     position: "bottom-center",
                     autoClose: 4000,
                     hideProgressBar: false,
@@ -267,27 +279,39 @@ export class JuliansRoom extends Component {
                         onClick={() => this.handleSequenceSelection("Rgb")}
                         size="large"
                     >
-                        RGB
-                </Button>
+                            RGB
+                    </Button>
+                    <Button className="sequence-btn"
+                        type="primary"
+                        icon={<RadarChartOutlined />}
+                        loading={loadings[4]}
+                        onClick={() => this.handleSequenceSelection("Oscillate")}
+                        size="large"
+                    >
+                        Oscillate
+                    </Button>
+                </Center>
+
+                <Center>
                     <Button className="sequence-btn"
                         type="primary"
                         icon={<BugOutlined />}
-                        loading={loadings[4]}
+                        loading={loadings[5]}
                         onClick={() => this.handleSequenceSelection("Jungle")}
                         size="large"
                     >
                             Jungle
-                </Button>
-                <Button className="sequence-btn"
+                    </Button>
+                        <Button className="sequence-btn"
                             type="primary"
-                            icon={<RadarChartOutlined />}
-                            loading={loadings[4]}
-                            onClick={() => this.handleSequenceSelection("Oscillate")}
+                            icon={<StockOutlined />}
+                            loading={loadings[6]}
+                            onClick={() => this.handleSequenceSelection("Ocean")}
                             size="large"
                         >
-                            Oscillate
-                </Button>
-                    </Center>
+                            Ocean
+                    </Button>
+                </Center>
             </div>
             <ToastContainer
                 position="bottom-center"
