@@ -16,6 +16,7 @@ namespace control.Controllers
             var color = Color.FromArgb(ledColor.r, ledColor.b, ledColor.g);
             if (Math.Abs(color.GetHue() - Program.lastSelectedHue) < 1)
                 return;
+
             Program.KillAllThreads();
             Program.lastSelectedHue = color.GetHue();
             Program.SetAllLeds(color);
@@ -33,10 +34,10 @@ namespace control.Controllers
         [HttpPost]
         public void SetSequence([FromBody] LedSequence ledSequence)
         {
-            if (ledSequence.sequence == "Rainbow") Program.Rainbow();
+            if (ledSequence.sequence == "Rainbow")  Program.Rainbow();
             if (ledSequence.sequence == "Carousel") Program.Carousel();
-            if (ledSequence.sequence == "Rgb") Program.Rgb();
-            if (ledSequence.sequence == "Jungle") Program.Jungle();
+            if (ledSequence.sequence == "Rgb")      Program.Rgb();
+            if (ledSequence.sequence == "Jungle")   Program.Jungle();
         }
 
         [Route("[controller]/TurnOffLeds")]

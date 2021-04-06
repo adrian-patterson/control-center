@@ -26,7 +26,6 @@ export class JuliansRoom extends Component {
         this.tipFormat = this.tipFormat.bind(this);
         this.setRgb = this.setRgb.bind(this);
         this.hslToRgb = this.hslToRgb.bind(this);
-        this.handleLedToggle = this.handleLedToggle.bind(this);
         this.handleSequenceSelection = this.handleSequenceSelection.bind(this);
         this.enterLoading = this.enterLoading.bind(this);
     }
@@ -50,8 +49,8 @@ export class JuliansRoom extends Component {
         });
     }
 
-    handleLedToggle = () => {
-        this.setState({ lightOn: false }, () => {
+    handleLedOff = () => {
+        this.setState({ lightBrightness: 0 }, () => {
             toast.dark('LEDs Turned Off.', {
                 position: "bottom-center",
                 autoClose: 4000,
@@ -61,12 +60,6 @@ export class JuliansRoom extends Component {
                 draggable: true,
                 progress: undefined,
             });
-            this.setRgb();
-        });
-    }
-
-    handleLedOff = () => {
-        this.setState({ lightBrightness: 0 }, () => {
             this.clearLeds();
         });
     }
@@ -223,7 +216,8 @@ export class JuliansRoom extends Component {
                     defaultValue={100}
                     tipFormatter={this.tipFormat}
                     onChange={this.handleBrightnessChange}
-                        />
+                    step={10}
+                />
                 <BulbOutlined className={nextColorCls} />
                 </div>
             <Center>

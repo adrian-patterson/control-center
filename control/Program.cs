@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace control
 {
@@ -15,7 +16,6 @@ namespace control
         public static readonly int ledCount = 88;
         public static int ledBrightness = 255;
         public static float lastSelectedHue = 0;
-        public static string activeThread;
         public static Thread rainbow, carousel, rgb, jungle;
         public static List<Thread> threads = new();
         public static List<Color> rainbowColors, carouselColors, rgbColors;
@@ -46,9 +46,9 @@ namespace control
 
         public static void SetAllLeds(Color color)
         {
-            Console.WriteLine("Setting all LEDS: "+color);
             rpi.SetAll(color);
             rpi.Render();
+            Thread.Sleep(10);
         }
 
         public static void SetSpecificLed(int number, Color color)
@@ -59,11 +59,10 @@ namespace control
 
         public static void SetBrightness(int brightness)
         {
-            ledBrightness = brightness;
+            KillAllThreads();
             rpi.SetBrightness(ledBrightness);
             rpi.Render();
-            Console.WriteLine("Changing brightness to: " + brightness);
-            RestartThread(activeThread);
+            Thread.Sleep(10);
         }
 
         public static void ClearLeds()
@@ -77,7 +76,6 @@ namespace control
 
             rainbow = NewRainbowThread();
             rainbow.Start();
-            activeThread = "rainbow";
         }
         public static void Carousel()
         {
@@ -85,7 +83,6 @@ namespace control
 
             carousel = NewCarouselThread();
             carousel.Start();
-            activeThread = "carousel";
         }
 
         public static void Rgb()
@@ -94,7 +91,6 @@ namespace control
 
             rgb = NewRgbThread();
             rgb.Start();
-            activeThread = "rgb";
         }
 
         public static void Jungle()
@@ -103,15 +99,6 @@ namespace control
 
             jungle = NewJungleThread();
             jungle.Start();
-            activeThread = "jungle";
-        }
-
-        public static void RestartThread(string threadName)
-        {
-            if (threadName == "rainbow")    Rainbow();
-            if (threadName == "carousel")   Carousel();
-            if (threadName == "rgb")        Rgb();
-            if (threadName == "jungle")     Jungle();
         }
 
         public static void KillAllThreads()
@@ -202,7 +189,7 @@ namespace control
         {
             return new Thread(() =>
             {
-                int r = 0;
+                int r = 15;
                 int g = 255;
                 int b = 15;
 
@@ -211,10 +198,10 @@ namespace control
                     while (true)
                     {
                         Color shadeOfGreen = new Color();
-                        while (g <= 255 && g > 100)
+                        while (g <= 255 && g > 50)
                         {
-                            Console.WriteLine("Jungle Sequence");
                             shadeOfGreen = Color.FromArgb(r, b, g);
+                            Console.WriteLine("Jungle Sequence: Color at " + shadeOfGreen);
                             SetAllLeds(shadeOfGreen);
 
                             g--;
@@ -222,8 +209,8 @@ namespace control
                         }
                         while (g < 255)
                         {
-                            Console.WriteLine("Jungle Sequence");
                             shadeOfGreen = Color.FromArgb(r, b, g);
+                            Console.WriteLine("Jungle Sequence: Color at " + shadeOfGreen);
                             SetAllLeds(shadeOfGreen);
 
                             g++;
