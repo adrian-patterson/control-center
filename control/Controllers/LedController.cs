@@ -14,7 +14,10 @@ namespace control.Controllers
         public void SetRgb([FromBody] LedColor ledColor)
         {
             var color = Color.FromArgb(ledColor.r, ledColor.b, ledColor.g);
+            if (Math.Abs(color.GetHue() - Program.lastSelectedHue) < 1)
+                return;
             Program.KillAllThreads();
+            Program.lastSelectedHue = color.GetHue();
             Program.SetAllLeds(color);
         }
 

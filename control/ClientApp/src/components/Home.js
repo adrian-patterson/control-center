@@ -9,14 +9,13 @@ export class Home extends Component {
     
     render() {
 
-    return (
-      <div>
-            
+        return (
+        <div>
             <Center>
-                <h1>Welcome Julian</h1>
+                <h1 className="text-white">Welcome Julian</h1>
             </Center>
             <Center>
-                <h3>Oh, Word?</h3>
+                <h3 className="text-white">Oh, Word?</h3>
             </Center>
             <div>
                 <Gallery photos={photos} />

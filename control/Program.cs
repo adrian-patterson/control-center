@@ -14,6 +14,8 @@ namespace control
         public static WS281x rpi;
         public static readonly int ledCount = 88;
         public static int ledBrightness = 255;
+        public static float lastSelectedHue = 0;
+        public static string activeThread;
         public static Thread rainbow, carousel, rgb, jungle;
         public static List<Thread> threads = new();
         public static List<Color> rainbowColors, carouselColors, rgbColors;
@@ -44,6 +46,7 @@ namespace control
 
         public static void SetAllLeds(Color color)
         {
+            Console.WriteLine("Setting all LEDS: "+color);
             rpi.SetAll(color);
             rpi.Render();
         }
@@ -59,6 +62,8 @@ namespace control
             ledBrightness = brightness;
             rpi.SetBrightness(ledBrightness);
             rpi.Render();
+            Console.WriteLine("Changing brightness to: " + brightness);
+            RestartThread(activeThread);
         }
 
         public static void ClearLeds()
@@ -72,6 +77,7 @@ namespace control
 
             rainbow = NewRainbowThread();
             rainbow.Start();
+            activeThread = "rainbow";
         }
         public static void Carousel()
         {
@@ -79,6 +85,7 @@ namespace control
 
             carousel = NewCarouselThread();
             carousel.Start();
+            activeThread = "carousel";
         }
 
         public static void Rgb()
@@ -87,6 +94,7 @@ namespace control
 
             rgb = NewRgbThread();
             rgb.Start();
+            activeThread = "rgb";
         }
 
         public static void Jungle()
@@ -95,14 +103,23 @@ namespace control
 
             jungle = NewJungleThread();
             jungle.Start();
+            activeThread = "jungle";
+        }
+
+        public static void RestartThread(string threadName)
+        {
+            if (threadName == "rainbow")    Rainbow();
+            if (threadName == "carousel")   Carousel();
+            if (threadName == "rgb")        Rgb();
+            if (threadName == "jungle")     Jungle();
         }
 
         public static void KillAllThreads()
         {
-            if (carousel.IsAlive) carousel.Interrupt();
-            if (rainbow.IsAlive) rainbow.Interrupt();
-            if (rgb.IsAlive) rgb.Interrupt();
-            if (jungle.IsAlive) jungle.Interrupt();
+            if (carousel.IsAlive)   carousel.Interrupt();
+            if (rainbow.IsAlive)    rainbow.Interrupt();
+            if (rgb.IsAlive)        rgb.Interrupt();
+            if (jungle.IsAlive)     jungle.Interrupt();
         }
 
         public static Thread NewRainbowThread()

@@ -36,12 +36,10 @@ export class JuliansRoom extends Component {
     }
 
     handleHueChange = value => {
-        if (Math.abs(this.state.lightHue - value) > 1) {
             this.setState({ lightHue: value, lightOn : true }, () => {
                 console.log("New Hue: " + value);
                 this.setRgb();
             });
-        }
     }
 
     handleBrightnessChange = value => {
@@ -216,7 +214,7 @@ export class JuliansRoom extends Component {
         return (
             <div>
                 <Center>
-                    <ColorPicker size="large" onChange={hue => this.handleHueChange(hue)} onSelect={this.handleLedOff} />
+                    <ColorPicker size="large" onInput={hue => this.handleHueChange(hue)} onSelect={this.handleLedOff} />
             </Center>
             <div className="icon-wrapper">
                     <EllipsisOutlined className={preColorCls} />
@@ -225,7 +223,6 @@ export class JuliansRoom extends Component {
                     defaultValue={100}
                     tipFormatter={this.tipFormat}
                     onChange={this.handleBrightnessChange}
-                    step={10}
                         />
                 <BulbOutlined className={nextColorCls} />
                 </div>
