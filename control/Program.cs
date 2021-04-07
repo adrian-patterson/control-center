@@ -208,10 +208,10 @@ namespace control
                     while (true)
                     {
                         var color = OscillateColors(progress);
-                        progress += 0.01f;
+                        progress += 0.005f;
 
                         SetAllLeds(color);
-                        Thread.Sleep(50);
+                        Thread.Sleep(25);
                         if (progress >= 1.0f)
                             progress = 0;
                     }
@@ -236,13 +236,13 @@ namespace control
                     while (true)
                     {
                         Color shadeOfGreen = new Color();
-                        while (g <= 255 && g > 25)
+                        while (g <= 255 && g > 30)
                         {
                             shadeOfGreen = Color.FromArgb(r, b, g);
                             SetAllLeds(shadeOfGreen);
 
                             g--;
-                            Thread.Sleep(10);
+                            Thread.Sleep(20);
                         }
                         while (g < 255)
                         {
@@ -250,7 +250,7 @@ namespace control
                             SetAllLeds(shadeOfGreen);
 
                             g++;
-                            Thread.Sleep(10);
+                            Thread.Sleep(20);
                         }
                     }
                 }
@@ -274,7 +274,7 @@ namespace control
                     while (true)
                     {
                         Color shadeOfGreen = new Color();
-                        while (b <= 255 && b > 25)
+                        while (b <= 255 && b > 30)
                         {
                             shadeOfGreen = Color.FromArgb(r, b, g);
                             SetAllLeds(shadeOfGreen);

@@ -46,6 +46,7 @@ namespace control.Controllers
         {
             if (ledState.lightOn == false)
             {
+                Program.KillAllThreads();
                 Program.ClearLeds();
             }
         }
