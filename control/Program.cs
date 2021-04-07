@@ -55,7 +55,7 @@ namespace control
         public static void SetBrightness(int brightness)
         {
             KillAllThreads();
-            
+
             rpi.SetBrightness(brightness);
             rpi.Render();
         }
