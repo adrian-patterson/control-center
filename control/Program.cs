@@ -12,6 +12,7 @@ namespace control
     {
         public static WS281x rpi;
         public static readonly int ledCount = 88;
+        public static Queue<int> brightnessQueue = new();
         public static Thread rainbow, carousel, rgb, jungle, ocean, oscillate;
         public static List<Color> rainbowColors, carouselColors, rgbColors;
 
@@ -208,7 +209,7 @@ namespace control
                     while (true)
                     {
                         var color = OscillateColors(progress);
-                        progress += 0.005f;
+                        progress += 0.001f;
 
                         SetAllLeds(color);
                         Thread.Sleep(25);
