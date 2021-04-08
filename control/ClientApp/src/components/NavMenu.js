@@ -20,11 +20,10 @@ export class NavMenu extends Component {
       collapsed: !this.state.collapsed
     });
   }
-
   render () {
     return (
       <header>
-            <Navbar className="navbar fixed-bottom navbar-dark navbar-expand-lg navbar-toggleable-sm ng-white border-bottom box-shadow mb-3" dark>
+            <Navbar scrolling dark className="navbar-dark navbar-expand-sm navbar-toggleable-sm border-bottom mb-3">
           <Container>
                     <NavbarBrand tag={Link} className="text-white" to="/">Control Center</NavbarBrand>
             <NavbarToggler onClick={this.toggleNavbar} className="mr-2" />
